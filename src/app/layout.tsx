@@ -1,13 +1,32 @@
-import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { twMerge } from "tailwind-merge";
-
-const dmSans = DM_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Light Saas Landing Page",
-  description: "Template created by Frontend Tribe",
+  title: {
+    default: "Pathway — Make meaningful progress every day",
+    template: "%s | Pathway",
+  },
+  description:
+    "Pathway gives focused teams a calm, shared place to plan work, build momentum, and celebrate progress.",
+  applicationName: "Pathway",
+  keywords: ["productivity", "project management", "team collaboration"],
+  openGraph: {
+    title: "Pathway — Make meaningful progress every day",
+    description:
+      "Plan with clarity, stay in flow, and turn everyday work into momentum.",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Pathway — Make meaningful progress every day",
+    description:
+      "Plan with clarity, stay in flow, and turn everyday work into momentum.",
+  },
+};
+
+export const viewport: Viewport = {
+  colorScheme: "light",
+  themeColor: "#f6f8ff",
 };
 
 export default function RootLayout({
@@ -16,10 +35,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="relative">
-      <body className={twMerge(dmSans.className, "antialiased bg-[#EAEEFE]")}>
-        {children}
-      </body>
+    <html lang="en">
+      <body className="antialiased">{children}</body>
     </html>
   );
 }

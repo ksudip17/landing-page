@@ -1,57 +1,55 @@
-"use client";
-import ArrowRight from "@/assets/arrow-right.svg";
-import starImage from "@/assets/star.png";
-import springImage from "@/assets/spring.png";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+
+import springImage from "@/assets/spring.png";
+import starImage from "@/assets/star.png";
+import { ArrowRightIcon } from "@/components/Icons";
 
 export const CallToAction = () => {
-  const sectionRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-
-  const translateY = useTransform(scrollYProgress, [0, 1], [150, -150]);
   return (
     <section
-      ref={sectionRef}
-      className="bg-gradient-to-b from-white to-[#D2DCFF] py-24 overflow-x-clip"
+      id="get-started"
+      aria-labelledby="cta-title"
+      className="relative overflow-hidden bg-[radial-gradient(ellipse_85%_100%_at_50%_100%,#cbd7ff_0%,#e8edff_43%,#ffffff_78%)] py-20 sm:py-28"
     >
-      <div className="container">
-        <div className="section-heading relative">
-          <h2 className="section-title">Sign up for free today</h2>
+      <div aria-hidden="true" className="pointer-events-none">
+        <Image
+          src={starImage}
+          alt=""
+          sizes="360px"
+          className="absolute -left-[210px] top-12 hidden w-[310px] select-none md:block lg:-left-[120px] lg:top-4 lg:w-[390px]"
+        />
+        <Image
+          src={springImage}
+          alt=""
+          sizes="360px"
+          className="absolute -right-[230px] top-4 hidden w-[330px] select-none md:block lg:-right-[125px] lg:-top-2 lg:w-[390px]"
+        />
+      </div>
+      <div className="container relative">
+        <div className="section-heading">
+          <div className="flex justify-center">
+            <div className="tag">A more focused week starts here</div>
+          </div>
+          <h2 id="cta-title" className="section-title mt-5">
+            Make room for work that moves you forward.
+          </h2>
           <p className="section-description mt-5">
-            Celebrate the joy of accomplishment with an app designed to track
-            your progress and motivate your efforts.
+            Start with the plan that fits today, then shape Pathway around the
+            way your team does its best work.
           </p>
-          <motion.img
-            src={starImage.src}
-            alt="Star Image"
-            width={360}
-            className="absolute -left-[350px] -top-[137px]"
-            style={{
-              translateY,
-            }}
-          />
-          <motion.img
-            src={springImage.src}
-            alt="Spring Image"
-            width={360}
-            className="absolute -right-[331px] -top-[19px]"
-            style={{
-              translateY,
-            }}
-          />
         </div>
-        <div className="flex gap-2 mt-10 justify-center">
-          <button className="btn btn-primary">Get for free</button>
-          <button className="btn btn-text gap-1">
-            <span>Learn more</span>
-            <ArrowRight className="h-5 w-5" />
-          </button>
+        <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <a className="btn btn-primary" href="#pricing">
+            Compare plans
+            <ArrowRightIcon className="h-4 w-4" />
+          </a>
+          <a className="btn btn-secondary" href="#features">
+            Take the product tour
+          </a>
         </div>
+        <p className="mt-5 text-center text-sm text-[#66719b]">
+          Start free. Upgrade only when your team needs more room to grow.
+        </p>
       </div>
     </section>
   );

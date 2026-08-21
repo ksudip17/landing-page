@@ -1,4 +1,6 @@
-"use client";
+import type { CSSProperties } from "react";
+import Image, { type StaticImageData } from "next/image";
+
 import avatar1 from "@/assets/avatar-1.png";
 import avatar2 from "@/assets/avatar-2.png";
 import avatar3 from "@/assets/avatar-3.png";
@@ -8,65 +10,77 @@ import avatar6 from "@/assets/avatar-6.png";
 import avatar7 from "@/assets/avatar-7.png";
 import avatar8 from "@/assets/avatar-8.png";
 import avatar9 from "@/assets/avatar-9.png";
-import Image from "next/image";
-import { twMerge } from "tailwind-merge";
-import { motion } from "framer-motion";
-import React from "react";
 
-const testimonials = [
+type Testimonial = {
+  quote: string;
+  image: StaticImageData;
+  name: string;
+  role: string;
+};
+
+const testimonials: Testimonial[] = [
   {
-    text: "As a seasoned designer always on the lookout for innovative tools, Framer.com instantly grabbed my attention.",
-    imageSrc: avatar1.src,
+    quote:
+      "Pathway gives our planning process just enough structure without turning every conversation into a status meeting.",
+    image: avatar1,
     name: "Jamie Rivera",
-    username: "@jamietechguru00",
+    role: "Product designer",
   },
   {
-    text: "Our team's productivity has skyrocketed since we started using this tool. ",
-    imageSrc: avatar2.src,
+    quote:
+      "Our team has more space to do deep work because everyone can see what matters next at a glance.",
+    image: avatar2,
     name: "Josh Smith",
-    username: "@jjsmith",
+    role: "Operations lead",
   },
   {
-    text: "This app has completely transformed how I manage my projects and deadlines.",
-    imageSrc: avatar3.src,
+    quote:
+      "I finally have a project view that feels as clear and intentional as the work we're trying to make.",
+    image: avatar3,
     name: "Morgan Lee",
-    username: "@morganleewhiz",
+    role: "Creative director",
   },
   {
-    text: "I was amazed at how quickly we were able to integrate this app into our workflow.",
-    imageSrc: avatar4.src,
+    quote:
+      "The rollout was effortless. It clicked for the team on day one, and our weekly planning is much lighter now.",
+    image: avatar4,
     name: "Casey Jordan",
-    username: "@caseyj",
+    role: "Program manager",
   },
   {
-    text: "Planning and executing events has never been easier. This app helps me keep track of all the moving parts, ensuring nothing slips through the cracks.",
-    imageSrc: avatar5.src,
+    quote:
+      "Pathway keeps all the moving pieces visible without asking people to spend their day updating a complicated system.",
+    image: avatar5,
     name: "Taylor Kim",
-    username: "@taylorkimm",
+    role: "Events strategist",
   },
   {
-    text: "The customizability and integration capabilities of this app are top-notch.",
-    imageSrc: avatar6.src,
+    quote:
+      "The thoughtful details make a real difference: less hunting for context, more time actually moving work forward.",
+    image: avatar6,
     name: "Riley Smith",
-    username: "@rileysmith1",
+    role: "Engineering manager",
   },
   {
-    text: "Adopting this app for our team has streamlined our project management and improved communication across the board.",
-    imageSrc: avatar7.src,
-    name: "Jordan Patels",
-    username: "@jpatelsdesign",
+    quote:
+      "We've replaced scattered check-ins with a shared rhythm that feels human, calm, and genuinely useful.",
+    image: avatar7,
+    name: "Jordan Patel",
+    role: "Founder, Kindred Studio",
   },
   {
-    text: "With this app, we can easily assign tasks, track progress, and manage documents all in one place.",
-    imageSrc: avatar8.src,
+    quote:
+      "I can assign work, see progress, and give teammates clarity without adding another noisy channel to their day.",
+    image: avatar8,
     name: "Sam Dawson",
-    username: "@dawsontechtips",
+    role: "Client services lead",
   },
   {
-    text: "Its user-friendly interface and robust features support our diverse needs.",
-    imageSrc: avatar9.src,
+    quote:
+      "It balances a friendly interface with the depth we need as our projects and team keep growing.",
+    image: avatar9,
     name: "Casey Harper",
-    username: "@casey09",
+    role: "Head of marketing",
   },
 ];
 
@@ -74,77 +88,108 @@ const firstColumn = testimonials.slice(0, 3);
 const secondColumn = testimonials.slice(3, 6);
 const thirdColumn = testimonials.slice(6, 9);
 
-const TestimonialsColumn = (props: {
-  className?: string;
-  testimonials: typeof testimonials;
-  duration?: number;
+const TestimonialCard = ({
+  testimonial,
+  isDuplicate = false,
+}: {
+  testimonial: Testimonial;
+  isDuplicate?: boolean;
 }) => (
-  <div className={props.className}>
-    <motion.div
-      animate={{
-        translateY: "-50%",
-      }}
-      transition={{
-        duration: props.duration || 10,
-        repeat: Infinity,
-        ease: "linear",
-        repeatType: "loop",
-      }}
-      className="flex flex-col gap-6 pb-6"
-    >
-      {[...new Array(2)].fill(0).map((_, index) => (
-        <React.Fragment key={index}>
-          {props.testimonials.map(({ text, imageSrc, name, username }) => (
-            <div className="card">
-              <div>{text}</div>
-              <div className="flex items-center gap-2 mt-5">
-                <Image
-                  src={imageSrc}
-                  alt={name}
-                  width={40}
-                  height={40}
-                  className="h-10 w-10 rounded-full"
-                />
-                <div className="flex flex-col">
-                  <div className="font-medium tracking-tight leading-5">
-                    {name}
-                  </div>
-                  <div className="leading-5 tracking-tight">{username}</div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </React.Fragment>
-      ))}
-    </motion.div>
-  </div>
+  <article className="testimonial-card" aria-hidden={isDuplicate || undefined}>
+    <blockquote>
+      <p>“{testimonial.quote}”</p>
+    </blockquote>
+    <div className="mt-5 flex items-center gap-3">
+      <Image
+        src={testimonial.image}
+        alt={isDuplicate ? "" : testimonial.name}
+        width={42}
+        height={42}
+        sizes="42px"
+        className="h-[42px] w-[42px] rounded-full object-cover"
+      />
+      <div>
+        <p className="font-bold tracking-tight text-[#202951]">{testimonial.name}</p>
+        <p className="text-xs text-[#6c769d]">{testimonial.role}</p>
+      </div>
+    </div>
+  </article>
 );
+
+const TestimonialsColumn = ({
+  testimonials: columnTestimonials,
+  className = "",
+  duration,
+  direction,
+}: {
+  testimonials: Testimonial[];
+  className?: string;
+  duration: number;
+  direction?: "up" | "down";
+}) => {
+  const style = {
+    "--testimonial-duration": `${duration}s`,
+  } as CSSProperties;
+
+  return (
+    <div className={`w-full max-w-[360px] ${className}`}>
+      <div
+        className="testimonial-track flex flex-col"
+        style={style}
+        data-direction={direction === "down" ? "down" : undefined}
+      >
+        <div className="flex flex-col gap-5 pb-5">
+          {columnTestimonials.map((testimonial) => (
+            <TestimonialCard key={testimonial.name} testimonial={testimonial} />
+          ))}
+        </div>
+        <div className="flex flex-col gap-5 pb-5" aria-hidden="true">
+          {columnTestimonials.map((testimonial) => (
+            <TestimonialCard
+              key={`${testimonial.name}-duplicate`}
+              testimonial={testimonial}
+              isDuplicate
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export const Testimonials = () => {
   return (
-    <section className="bg-white">
+    <section
+      id="testimonials"
+      aria-labelledby="testimonials-title"
+      className="bg-white pb-20 pt-6 sm:pb-28"
+    >
       <div className="container">
         <div className="section-heading">
           <div className="flex justify-center">
-            <div className="tag">Testimonials</div>
+            <div className="tag">Loved by focused teams</div>
           </div>
-          <h2 className="section-title mt-5">What our users say</h2>
+          <h2 id="testimonials-title" className="section-title mt-5">
+            Work feels better when the system does too.
+          </h2>
           <p className="section-description mt-5">
-            From intuitive design to powerful features, our app has become an
-            essential tool for users around the world.
+            From the first plan to the final handoff, teams use Pathway to keep
+            the work clear, connected, and moving.
           </p>
         </div>
-        <div className="flex justify-center gap-6 mt-10 [mask-image:linear-gradient(to_bottom,transparent,black_25%,black_75%,transparent)] max-h-[738px] overflow-hidden">
-          <TestimonialsColumn testimonials={firstColumn} duration={15} />
+
+        <div className="mx-auto mt-12 flex max-h-[660px] max-w-[1120px] justify-center gap-5 overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_9%,black_91%,transparent)] sm:mt-14 sm:gap-6">
+          <TestimonialsColumn testimonials={firstColumn} duration={18} />
           <TestimonialsColumn
             testimonials={secondColumn}
             className="hidden md:block"
-            duration={19}
+            duration={23}
+            direction="down"
           />
           <TestimonialsColumn
             testimonials={thirdColumn}
             className="hidden lg:block"
-            duration={17}
+            duration={20}
           />
         </div>
       </div>
